@@ -1,0 +1,51 @@
+<project name="JFind" default="run" basedir=".">
+
+    <target name="help">
+        <echo>
+            Ant build.xml file for JFind
+        </echo>
+    </target>
+    
+    <property name="searchClass" value="org.gradle.listener.ActionBroadcast" />
+    
+    <property name="searchPath" value="C:\Users\BMaramreddy\.m2\repository" />
+
+    <property name="project" value="." />
+    <property name="src" value="src" />
+    <property name="build" value="build" />
+    <property name="lib" value="C:\Program Files\Java\jdk1.7.0_80\lib" />
+
+    <path id="project.class.path">
+        <fileset dir="${lib}" includes="*.jar" />
+    </path>
+    <target name="show-classpath">
+        <pathconvert property="cp" refid="project.class.path" />
+        <echo>Classpath: ${cp}</echo>
+    </target>
+
+    <target name="compile" depends="clean,init">
+        <javac srcdir="${src}" destdir="${build}" debug="on" source="1.7" target="1.7" classpathref="project.class.path">
+            <patternset>
+                <include name="**/*.java" />
+                <exclude name="**/!*" />
+            </patternset>
+        </javac>
+    </target>
+    
+    <target name="init">
+        <mkdir dir="${build}" />
+    </target>
+
+    <target name="clean">
+        <delete dir="${build}" failonerror="true" />
+    </target>
+    
+    <target name="run">
+        <java classname="com.jfind.JFind" classpath="${build}" fork="true">
+            <classpath refid="project.class.path"/>
+            <arg value="${searchClass}"/>
+            <arg value="${searchPath}"/>
+        </java>
+    </target>
+
+</project>
